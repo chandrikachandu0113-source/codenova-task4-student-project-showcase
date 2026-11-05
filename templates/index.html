@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Project Showcase | CodeNova</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <h1>CodeNova Student Project Showcase</h1>
+        <p>Discover innovative student projects and share your ideas!</p>
+        <a href="#submit-project" class="btn">Submit Your Project</a>
+        <a href="/admin" class="admin-link">Admin Panel</a>
+    </div>
+</header>
+
+<main class="container">
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <section id="submit-project" class="form-section">
+        <h2>Submit Your Project</h2>
+
+        <form action="/submit" method="POST">
+
+            <label>Student Name</label>
+            <input type="text" name="student_name" required>
+
+            <label>Project Title</label>
+            <input type="text" name="project_title" required>
+
+            <label>Project Description</label>
+            <textarea name="description" rows="4" required></textarea>
+
+            <label>Technologies Used</label>
+            <input type="text" name="technology"
+                   placeholder="Python, Flask, HTML, CSS" required>
+
+            <label>Project Category</label>
+            <select name="category" required>
+                <option value="">Select Category</option>
+                <option>Web Development</option>
+                <option>Artificial Intelligence</option>
+                <option>Machine Learning</option>
+                <option>Data Science</option>
+                <option>Mobile Application</option>
+                <option>IoT</option>
+                <option>Other</option>
+            </select>
+
+            <label>Email Address</label>
+            <input type="email" name="email" required>
+
+            <button type="submit">Submit Project</button>
+
+        </form>
+    </section>
+
+    <section class="projects-section">
+        <h2>Featured Student Projects</h2>
+
+        {% if projects %}
+            <div class="project-grid">
+                {% for project in projects %}
+                    <div class="project-card">
+
+                        <span class="category">{{ project.category }}</span>
+
+                        <h3>{{ project.project_title }}</h3>
+
+                        <p>{{ project.description }}</p>
+
+                        <p><strong>Student:</strong> {{ project.student_name }}</p>
+
+                        <p><strong>Technology:</strong> {{ project.technology }}</p>
+
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-message">
+                No approved projects yet. Be the first to submit your project!
+            </p>
+        {% endif %}
+    </section>
+
+</main>
+
+<footer>
+    <p>© 2026 CodeNova Student Project Showcase | Internship Batch 01</p>
+</footer>
+
+</body>
+</html>

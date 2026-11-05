@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | CodeNova</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+        <p>Manage student project submissions</p>
+        <a href="/" class="btn">Back to Homepage</a>
+    </div>
+</header>
+
+<main class="container">
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <section class="projects-section">
+        <h2>All Submitted Projects</h2>
+
+        {% if projects %}
+            {% for project in projects %}
+
+                <div class="admin-card">
+
+                    <h3>{{ project.project_title }}</h3>
+
+                    <p><strong>Student:</strong> {{ project.student_name }}</p>
+
+                    <p><strong>Email:</strong> {{ project.email }}</p>
+
+                    <p><strong>Description:</strong> {{ project.description }}</p>
+
+                    <p><strong>Technology:</strong> {{ project.technology }}</p>
+
+                    <p><strong>Category:</strong> {{ project.category }}</p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        <span class="status">{{ project.status }}</span>
+                    </p>
+
+                    {% if project.status == 'Pending' %}
+
+                        <a href="/admin/approve/{{ project.id }}"
+                           class="approve-btn">Approve</a>
+
+                        <a href="/admin/reject/{{ project.id }}"
+                           class="reject-btn">Reject</a>
+
+                    {% endif %}
+
+                    <a href="/admin/delete/{{ project.id }}"
+                       class="delete-btn"
+                       onclick="return confirm('Are you sure you want to delete this project?')">
+                       Delete
+                    </a>
+
+                </div>
+
+            {% endfor %}
+        {% else %}
+            <p>No project submissions yet.</p>
+        {% endif %}
+
+    </section>
+
+</main>
+
+<footer>
+    <p>© 2026 CodeNova Student Project Showcase</p>
+</footer>
+
+</body>
+</html>
